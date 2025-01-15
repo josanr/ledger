@@ -26,5 +26,6 @@ services:
 ###> doctrine/doctrine-bundle ###
   database:
     ports:
-      - "5432"
+      - target: 5432
+        published: 32771
 ###< doctrine/doctrine-bundle ###
