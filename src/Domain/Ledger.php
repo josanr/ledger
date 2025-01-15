@@ -30,7 +30,7 @@ class Ledger
     private ?string $ledgerType = null;
 
     #[ORM\Column]
-    private ?int $currencyId = null;
+    private ?string $currencyId = null;
 
     #[ORM\Column(type: Types::DATETIMETZ_MUTABLE)]
     private ?\DateTimeInterface $created_at = null;
@@ -90,16 +90,14 @@ class Ledger
         return $this;
     }
 
-    public function getCurrencyId(): ?int
+    public function getCurrencyId(): ?string
     {
         return $this->currencyId;
     }
 
-    public function setCurrencyId(int $currencyId): static
+    public function setCurrencyId(string $currencyId): void
     {
         $this->currencyId = $currencyId;
-
-        return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
