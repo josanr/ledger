@@ -9,3 +9,9 @@ transaction_controllers:
         path: ../src/Infrastructure/Transactions/Api/
         namespace: App\Infrastructure\Transactions\Api
     type: attribute
+
+balances_controllers:
+    resource:
+        path: ../src/Infrastructure/Balances/Api/
+        namespace: App\Infrastructure\Balances\Api
+    type: attribute
