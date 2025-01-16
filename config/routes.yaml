@@ -1,5 +1,11 @@
-controllers:
+ledger_controllers:
     resource:
         path: ../src/Infrastructure/Ledgers/Api/
         namespace: App\Infrastructure\Ledgers\Api
+    type: attribute
+
+transaction_controllers:
+    resource:
+        path: ../src/Infrastructure/Transactions/Api/
+        namespace: App\Infrastructure\Transactions\Api
     type: attribute

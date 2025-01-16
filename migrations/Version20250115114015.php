@@ -41,6 +41,7 @@ final class Version20250115114015 extends AbstractMigration
             CREATE TABLE transaction
             (
                 id               UUID                        NOT NULL,
+                external_id      UUID                        NOT NULL,
                 ledger_id_id     UUID                        NOT NULL,
                 description      TEXT                        NOT NULL,
                 transaction_date TIMESTAMP(0) WITH TIME ZONE NOT NULL,
@@ -52,6 +53,7 @@ final class Version20250115114015 extends AbstractMigration
                 PRIMARY KEY (id)
             )
         ');
+        $this->addSql('create unique index transaction__index_external_id on transaction (external_id)');
         $this->addSql('CREATE INDEX IDX_723705D13042294E ON transaction (ledger_id_id)');
         $this->addSql('COMMENT ON COLUMN transaction.id IS \'(DC2Type:uuid)\'');
         $this->addSql('COMMENT ON COLUMN transaction.ledger_id_id IS \'(DC2Type:uuid)\'');

@@ -17,6 +17,8 @@ class Transaction
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
     private ?Uuid $id = null;
 
+    #[ORM\Column(type: UuidType::NAME, unique: true)]
+    private ?Uuid $externalId = null;
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
@@ -31,7 +33,7 @@ class Transaction
     private ?int $amount = null;
 
     #[ORM\Column]
-    private ?int $currencyId = null;
+    private ?string $currencyId = null;
 
     #[ORM\Column(length: 10)]
     private ?string $direction = null;
@@ -92,12 +94,12 @@ class Transaction
         $this->amount = $amount;
     }
 
-    public function getCurrencyId(): ?int
+    public function getCurrencyId(): ?string
     {
         return $this->currencyId;
     }
 
-    public function setCurrencyId(int $currencyId): void
+    public function setCurrencyId(string $currencyId): void
     {
         $this->currencyId = $currencyId;
     }
@@ -130,5 +132,15 @@ class Transaction
     public function setUpdatedAt(\DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    public function getExternalId(): ?Uuid
+    {
+        return $this->externalId;
+    }
+
+    public function setExternalId(?Uuid $externalId): void
+    {
+        $this->externalId = $externalId;
     }
 }
