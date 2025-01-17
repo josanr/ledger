@@ -6,7 +6,6 @@ use App\Domain\Ledger;
 use App\Domain\Transaction;
 use App\Tests\Support\ApiTester;
 use Symfony\Component\Uid\Uuid;
-use Symfony\Component\Validator\Constraints\Date;
 
 class GetBalanceCest
 {
@@ -16,18 +15,20 @@ class GetBalanceCest
         $expectedBalance = 500;
 
         $id = $I->haveInRepository(Ledger::class, [
-            'code' => "TRANSACTION_TEST",
-            'name' => "Transaction Test Ledger",
-            'description' => "Test ledger for transactions",
-            'ledgerType' => "asset",
-            'currencyId' => "USD",
+            'code' => 'TRANSACTION_TEST',
+            'name' => 'Transaction Test Ledger',
+            'description' => 'Test ledger for transactions',
+            'ledgerType' => 'asset',
+            'currencyId' => 'USD',
             'created_at' => new \DateTime(),
             'updated_at' => new \DateTime(),
         ]);
-        $ledger = $I->grabEntityFromRepository(Ledger::class, ['id' => $id]);
+        $ledger = $I->grabEntityFromRepository(Ledger::class, [
+            'id' => $id,
+        ]);
         $I->haveInRepository(Transaction::class, [
             'externalId' => Uuid::v7(),
-            'description' => "test transaction",
+            'description' => 'test transaction',
             'transactionDate' => new \DateTime(),
             'ledgerId' => $ledger,
             'amount' => 1000,
@@ -38,7 +39,7 @@ class GetBalanceCest
         ]);
         $I->haveInRepository(Transaction::class, [
             'externalId' => Uuid::v7(),
-            'description' => "test transaction",
+            'description' => 'test transaction',
             'transactionDate' => new \DateTime(),
             'ledgerId' => $ledger,
             'amount' => 500,

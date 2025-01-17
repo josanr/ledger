@@ -21,9 +21,7 @@ class GetBalanceUseCase
     }
 
     /**
-     * @param Uuid $ledgerId
      * @return Collection<Balance>
-     * @throws NotFoundException
      */
     public function execute(Uuid $ledgerId): Collection
     {
@@ -32,7 +30,7 @@ class GetBalanceUseCase
             $sources = $this->balanceRepository->getBalanceSources($ledger->getId());
             $filter = [];
             foreach ($sources as $source) {
-                if (!isset($filter[$source->getCurrencyId()])) {
+                if (! isset($filter[$source->getCurrencyId()])) {
                     $filter[$source->getCurrencyId()] = [
                         'total' => 0,
                         'debit' => 0,
@@ -52,10 +50,10 @@ class GetBalanceUseCase
             foreach ($filter as $currencyId => $data) {
                 $result[] = new Balance(
                     ledger: $ledger,
-                        balance: $data['total'],
-                        debit: $data['debit'],
-                        credit: $data['credit'],
-                        currency: $currencyId,
+                    balance: $data['total'],
+                    debit: $data['debit'],
+                    credit: $data['credit'],
+                    currency: $currencyId,
                 );
             }
 
@@ -63,7 +61,7 @@ class GetBalanceUseCase
         } catch (NotFoundException $e) {
             $this->logger->info(sprintf('Not found ledger for balance with id: %s', $ledgerId), [
                 'message' => $e->getMessage(),
-                'exception' => $e
+                'exception' => $e,
             ]);
             throw $e;
         }

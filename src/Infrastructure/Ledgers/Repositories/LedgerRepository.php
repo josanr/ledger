@@ -12,7 +12,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Uid\Uuid;
 
-class LedgerRepository  extends ServiceEntityRepository implements LedgerRepositoryInterface
+class LedgerRepository extends ServiceEntityRepository implements LedgerRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -36,7 +36,7 @@ class LedgerRepository  extends ServiceEntityRepository implements LedgerReposit
         try {
             $em->persist($ledger);
             $em->flush();
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             throw new StoreException(sprintf('Could not persist ledger code: %s', $ledger->getCode()), 1, $e);
         }
     }

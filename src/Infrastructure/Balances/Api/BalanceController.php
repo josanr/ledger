@@ -19,7 +19,6 @@ use Symfony\Component\Uid\Uuid;
 
 class BalanceController extends AbstractController
 {
-
     public function __construct(
         private readonly GetBalanceUseCase $getBalanceUseCase,
         private readonly BalanceMapper $balanceMapper
@@ -31,30 +30,29 @@ class BalanceController extends AbstractController
         description: 'Balances for the selected Ledger',
         content: new OA\JsonContent(
             type: 'array',
-            items: new OA\Items(
-                ref: new Model(type: BalanceItemResponse::class)
-            )
+            items: new OA\Items(ref: new Model(type: BalanceItemResponse::class))
         )
     )]
-    #[OA\Response(
-        response: 417,
-        description: 'Not found entity'
-    )]
-    #[OA\Response(
-        response: 500,
-        description: 'Unexpected exception'
-    )]
+    #[OA\Response(response: 417, description: 'Not found entity')]
+    #[OA\Response(response: 500, description: 'Unexpected exception')]
     #[Route('/balances/{ledgerId}', methods: ['GET'], format: 'json')]
     public function index(Uuid $ledgerId): Response
     {
         try {
             $balances = $this->getBalanceUseCase->execute($ledgerId);
-            $response = array_map(fn(Balance $balance) => $this->balanceMapper->mapToResponse($balance), $balances->toArray());
+            $response = array_map(
+                fn (Balance $balance) => $this->balanceMapper->mapToResponse($balance),
+                $balances->toArray()
+            );
             return new JsonResponse($response);
         } catch (NotFoundException $e) {
-            return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_EXPECTATION_FAILED);
+            return new JsonResponse([
+                'message' => $e->getMessage(),
+            ], Response::HTTP_EXPECTATION_FAILED);
         } catch (\Exception $e) {
-            return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return new JsonResponse([
+                'message' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

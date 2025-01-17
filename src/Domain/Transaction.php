@@ -19,6 +19,7 @@ class Transaction
 
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     private ?Uuid $externalId = null;
+
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 

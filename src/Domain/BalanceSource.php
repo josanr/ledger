@@ -5,6 +5,7 @@ namespace App\Domain;
 class BalanceSource
 {
     public const DIRRECTION_DEBIT = 'DEBIT';
+
     public const DIRRECTION_CREDIT = 'CREDIT';
 
     public function __construct(

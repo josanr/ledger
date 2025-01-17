@@ -17,8 +17,8 @@ use Symfony\Component\Uid\Uuid;
 
 class GetBalanceUseCaseTest extends TestCase
 {
-
     private BalanceRepositoryInterface $balanceRepository;
+
     private LedgerRepositoryInterface $ledgerRepository;
 
     protected function setUp(): void
@@ -112,13 +112,15 @@ class GetBalanceUseCaseTest extends TestCase
         // Assert
         $this->assertCount(3, $result);
 
-        $usd = $result->filter(fn(Balance $balance) => $balance->getCurrency() === 'USD')->first();
-        $eur = $result->filter(fn(Balance $balance) => $balance->getCurrency() === 'EUR')->first();
-        $mdl = $result->filter(fn(Balance $balance) => $balance->getCurrency() === 'MDL')->first();
+        $usd = $result->filter(fn (Balance $balance) => $balance->getCurrency() === 'USD')
+            ->first();
+        $eur = $result->filter(fn (Balance $balance) => $balance->getCurrency() === 'EUR')
+            ->first();
+        $mdl = $result->filter(fn (Balance $balance) => $balance->getCurrency() === 'MDL')
+            ->first();
 
         $this->assertEquals(900, $usd->getBalance());
         $this->assertEquals(-800, $eur->getBalance());
         $this->assertEquals(400, $mdl->getBalance());
     }
-
 }

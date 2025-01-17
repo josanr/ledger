@@ -37,5 +37,4 @@ class Balance
     {
         return $this->currency;
     }
-
 }

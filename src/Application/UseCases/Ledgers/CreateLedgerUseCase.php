@@ -10,11 +10,10 @@ use Psr\Log\LoggerInterface;
 
 class CreateLedgerUseCase
 {
-
     public function __construct(
         private readonly LoggerInterface $logger,
-        private readonly LedgerRepositoryInterface $ledgerRepository)
-    {
+        private readonly LedgerRepositoryInterface $ledgerRepository
+    ) {
     }
 
     public function execute(CreateLedgerRequest $request): Ledger
@@ -31,10 +30,10 @@ class CreateLedgerUseCase
             $ledger->setUpdatedAt(new \DateTime());
             $this->ledgerRepository->save($ledger);
             return $ledger;
-        }catch (StoreException $e) {
+        } catch (StoreException $e) {
             $this->logger->error(sprintf('Error creating ledger %s', $request->name), [
                 'message' => $e->getMessage(),
-                'exception' => $e
+                'exception' => $e,
             ]);
             throw $e;
         }

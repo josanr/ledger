@@ -12,13 +12,11 @@ use Psr\Log\LoggerInterface;
 
 class CreateTransactionUseCase
 {
-
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly TransactionsRepositoryInterface $transactionsRepository,
         private readonly LedgerRepositoryInterface $ledgerRepository
-    )
-    {
+    ) {
     }
 
     public function execute(CreateTransactionRequest $request): Transaction
@@ -42,13 +40,13 @@ class CreateTransactionUseCase
         } catch (NotFoundException $e) {
             $this->logger->error(sprintf('Not found ledger for transaction with id: %s', $request->ledgerId), [
                 'message' => $e->getMessage(),
-                'exception' => $e
+                'exception' => $e,
             ]);
             throw new StoreException('Not found ledger for transaction', 2, $e);
         } catch (StoreException $e) {
             $this->logger->error(sprintf('Unexpected exception: %s', $request->ledgerId), [
                 'message' => $e->getMessage(),
-                'exception' => $e
+                'exception' => $e,
             ]);
             throw $e;
         }

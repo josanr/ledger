@@ -17,26 +17,11 @@ use Symfony\Component\Uid\Uuid;
 
 class CreateTransactionUseCaseTest extends TestCase
 {
-
     private TransactionsRepositoryInterface $transactionRepository;
-    private LoggerInterface $logger;
-    private LedgerRepositoryInterface $ledgerRepository;
 
-    /**
-     * @return CreateTransactionRequest
-     */
-    private function buildTransactionRequest(): CreateTransactionRequest
-    {
-        $txRequest = new CreateTransactionRequest();
-        $txRequest->ledgerId = Uuid::v7();
-        $txRequest->externalId = Uuid::v7();
-        $txRequest->amount = 100;
-        $txRequest->description = 'Test transaction';
-        $txRequest->currency = 'USD';
-        $txRequest->direction = BalanceSource::DIRRECTION_DEBIT;
-        $txRequest->transactionDate = new \DateTime();
-        return $txRequest;
-    }
+    private LoggerInterface $logger;
+
+    private LedgerRepositoryInterface $ledgerRepository;
 
     protected function setUp(): void
     {
@@ -59,19 +44,20 @@ class CreateTransactionUseCaseTest extends TestCase
 
         $testLedger = new Ledger();
         $testLedger->setId($txRequest->ledgerId);
-        $this->ledgerRepository->method('getById')->willReturn($testLedger);
+        $this->ledgerRepository->method('getById')
+            ->willReturn($testLedger);
 
         $this->transactionRepository
             ->expects($this->once())
             ->method('save')
             ->with(
                 $this->callback(function (Transaction $transaction) use ($txRequest) {
-                    return
-                        $transaction->getAmount() === $txRequest->amount &&
+                    return $transaction->getAmount() === $txRequest->amount &&
                         $transaction->getDescription() === $txRequest->description &&
                         $transaction->getExternalId() === $txRequest->externalId &&
                         $transaction->getDirection() === $txRequest->direction &&
-                        $transaction->getLedgerId()->getId() === $txRequest->ledgerId;
+                        $transaction->getLedgerId()
+                            ->getId() === $txRequest->ledgerId;
                 })
             );
 
@@ -117,5 +103,18 @@ class CreateTransactionUseCaseTest extends TestCase
         $this->expectException(StoreException::class);
 
         $this->useCase->execute($txRequest);
+    }
+
+    private function buildTransactionRequest(): CreateTransactionRequest
+    {
+        $txRequest = new CreateTransactionRequest();
+        $txRequest->ledgerId = Uuid::v7();
+        $txRequest->externalId = Uuid::v7();
+        $txRequest->amount = 100;
+        $txRequest->description = 'Test transaction';
+        $txRequest->currency = 'USD';
+        $txRequest->direction = BalanceSource::DIRRECTION_DEBIT;
+        $txRequest->transactionDate = new \DateTime();
+        return $txRequest;
     }
 }

@@ -28,41 +28,30 @@ class LedgersController extends AbstractController
     }
 
     #[Route('/ledgers', methods: ['POST'], format: 'json')]
-    #[OA\Post(
-        requestBody: new OA\RequestBody(
-            content: new Model(type: CreateLedgerRequest::class)
-        )
-    )]
+    #[OA\Post(requestBody: new OA\RequestBody(content: new Model(type: CreateLedgerRequest::class)))]
     #[OA\Response(
         response: 200,
         description: 'Successful response',
         content: new Model(type: LedgerItemResponse::class)
     )]
-    #[OA\Response(
-        response: 417,
-        description: 'Could not create ledger'
-    )]
-    #[OA\Response(
-        response: 422,
-        description: 'Request is invalid'
-    )]
-    #[OA\Response(
-        response: 500,
-        description: 'Unexpected exception'
-    )]
-    public function create(
-        #[MapRequestPayload] CreateLedgerRequest $createLedgerRequest
-    ): Response {
-
+    #[OA\Response(response: 417, description: 'Could not create ledger')]
+    #[OA\Response(response: 422, description: 'Request is invalid')]
+    #[OA\Response(response: 500, description: 'Unexpected exception')]
+    public function create(#[MapRequestPayload] CreateLedgerRequest $createLedgerRequest): Response
+    {
 
         try {
             $ledger = $this->createLedgerUseCase->execute($createLedgerRequest);
             $response = $this->ledgerMapper->mapToResponse($ledger);
             return new JsonResponse($response, Response::HTTP_OK);
         } catch (StoreException $e) {
-            return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_EXPECTATION_FAILED);
+            return new JsonResponse([
+                'message' => $e->getMessage(),
+            ], Response::HTTP_EXPECTATION_FAILED);
         } catch (\Exception $e) {
-            return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return new JsonResponse([
+                'message' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -75,10 +64,7 @@ class LedgersController extends AbstractController
             items: new OA\Items(ref: new Model(type: LedgerItemResponse::class))
         )
     )]
-    #[OA\Response(
-        response: 500,
-        description: 'Unexpected exception'
-    )]
+    #[OA\Response(response: 500, description: 'Unexpected exception')]
     public function get(): Response
     {
         try {
@@ -89,7 +75,9 @@ class LedgersController extends AbstractController
             }
             return new JsonResponse($response, Response::HTTP_OK);
         } catch (\Exception $e) {
-            return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return new JsonResponse([
+                'message' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

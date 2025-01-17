@@ -7,7 +7,6 @@ use App\Infrastructure\Ledgers\Api\Response\LedgerItemResponse;
 
 class LedgerMapper
 {
-
     public function mapToResponse(Ledger $ledger): LedgerItemResponse
     {
 

@@ -25,10 +25,16 @@ class TransactionRepository extends ServiceEntityRepository implements Transacti
         try {
             $em->persist($transaction);
             $em->flush();
-        }catch (UniqueConstraintViolationException $e) {
-            throw new StoreException(sprintf('Transaction already exists with code: %s', $transaction->getExternalId()), 1, $e);
-        }catch (\Exception $e) {
-            throw new StoreException(sprintf('Could not persist transaction code: %s', $transaction->getExternalId()), 1, $e);
+        } catch (UniqueConstraintViolationException $e) {
+            throw new StoreException(sprintf(
+                'Transaction already exists with code: %s',
+                $transaction->getExternalId()
+            ), 1, $e);
+        } catch (\Exception $e) {
+            throw new StoreException(sprintf(
+                'Could not persist transaction code: %s',
+                $transaction->getExternalId()
+            ), 1, $e);
         }
     }
 }

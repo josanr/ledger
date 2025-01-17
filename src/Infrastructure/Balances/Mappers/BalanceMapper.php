@@ -10,7 +10,8 @@ class BalanceMapper
     public function mapToResponse(Balance $balance): BalanceItemResponse
     {
         $dto = new BalanceItemResponse();
-        $dto->ledgerId = $balance->getLedger()->getId();
+        $dto->ledgerId = $balance->getLedger()
+            ->getId();
         $dto->debit = $balance->getDebit();
         $dto->credit = $balance->getCredit();
         $dto->balance = $balance->getBalance();

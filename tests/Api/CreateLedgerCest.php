@@ -11,13 +11,13 @@ class CreateLedgerCest
     // tests
     public function createLedger(ApiTester $I)
     {
-        $code = "MAIN_TEST";
+        $code = 'MAIN_TEST';
         $payload = [
-            "code" => $code,
-            "name" => "Main Ledger",
-            "description" => "Primary ledger for all transactions",
-            "ledgerType" => "GENERAL",
-            "currency" => "USD"
+            'code' => $code,
+            'name' => 'Main Ledger',
+            'description' => 'Primary ledger for all transactions',
+            'ledgerType' => 'GENERAL',
+            'currency' => 'USD',
         ];
         $I->sendPost('/ledgers', $payload);
         $I->seeResponseCodeIsSuccessful();
@@ -28,18 +28,20 @@ class CreateLedgerCest
         $I->seeResponseJsonMatchesJsonPath('$.ledgerType');
         $I->seeResponseJsonMatchesJsonPath('$.currencyId');
 
-        $I->canSeeInRepository(Ledger::class, ['code' => $code]);
+        $I->canSeeInRepository(Ledger::class, [
+            'code' => $code,
+        ]);
     }
 
     public function createLedgerFailureInputValidation(ApiTester $I)
     {
-        $code = "MAIN_TEST";
+        $code = 'MAIN_TEST';
         $payload = [
-            "code" => $code,
-            "name" => "Main Ledger",
-            "description" => "Primary ledger for all transactions",
-            "ledgerType" => "GENERAL",
-            "currency" => "Dollar"
+            'code' => $code,
+            'name' => 'Main Ledger',
+            'description' => 'Primary ledger for all transactions',
+            'ledgerType' => 'GENERAL',
+            'currency' => 'Dollar',
         ];
         $I->sendPost('/ledgers', $payload);
         $I->seeResponseCodeIs(Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -47,24 +49,24 @@ class CreateLedgerCest
 
     public function createLedgerFailureLedgerWithSameCodeExists(ApiTester $I)
     {
-        $code = "MAIN_TEST";
+        $code = 'MAIN_TEST';
 
         $I->haveInRepository(Ledger::class, [
             'code' => $code,
-            'name' => "Transaction Test Ledger",
-            'description' => "Test ledger for transactions",
-            'ledgerType' => "asset",
-            'currencyId' => "USD",
+            'name' => 'Transaction Test Ledger',
+            'description' => 'Test ledger for transactions',
+            'ledgerType' => 'asset',
+            'currencyId' => 'USD',
             'created_at' => new \DateTime(),
             'updated_at' => new \DateTime(),
         ]);
 
         $payload = [
-            "code" => $code,
-            "name" => "Main Ledger",
-            "description" => "Primary ledger for all transactions",
-            "ledgerType" => "GENERAL",
-            "currency" => "USD"
+            'code' => $code,
+            'name' => 'Main Ledger',
+            'description' => 'Primary ledger for all transactions',
+            'ledgerType' => 'GENERAL',
+            'currency' => 'USD',
         ];
         $I->sendPost('/ledgers', $payload);
         $I->seeResponseCodeIs(Response::HTTP_EXPECTATION_FAILED);

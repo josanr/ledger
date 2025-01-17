@@ -9,6 +9,7 @@ class CreateTransactionRequest
 {
     #[Assert\NotBlank]
     public Uuid $externalId;
+
     #[Assert\NotBlank]
     public Uuid $ledgerId;
 

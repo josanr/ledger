@@ -12,21 +12,9 @@ use Psr\Log\LoggerInterface;
 
 class CreateLedgerUseCaseTest extends TestCase
 {
-
     private LoggerInterface $logger;
+
     private LedgerRepositoryInterface $ledgerRepository;
-
-    private function buildLedgerRequest(): CreateLedgerRequest
-    {
-        $lgRequest = new CreateLedgerRequest();
-        $lgRequest->name = 'Test ledger';
-        $lgRequest->description = 'Test ledger description';
-        $lgRequest->code = 'TEST';
-        $lgRequest->ledgerType = 'asset';
-        $lgRequest->currency = 'USD';
-
-        return $lgRequest;
-    }
 
     protected function setUp(): void
     {
@@ -34,10 +22,7 @@ class CreateLedgerUseCaseTest extends TestCase
 
         $this->ledgerRepository = $this->createMock(LedgerRepositoryInterface::class);
         $this->logger = $this->createMock(LoggerInterface::class);
-        $this->useCase = new CreateLedgerUseCase(
-            $this->logger,
-            $this->ledgerRepository
-        );
+        $this->useCase = new CreateLedgerUseCase($this->logger, $this->ledgerRepository);
 
     }
 
@@ -50,8 +35,7 @@ class CreateLedgerUseCaseTest extends TestCase
             ->method('save')
             ->with(
                 $this->callback(function (Ledger $ledger) use ($lgRequest) {
-                    return
-                        $ledger->getName() === $lgRequest->name &&
+                    return $ledger->getName() === $lgRequest->name &&
                         $ledger->getDescription() === $lgRequest->description &&
                         $ledger->getCode() === $lgRequest->code &&
                         $ledger->getLedgerType() === $lgRequest->ledgerType &&
@@ -82,4 +66,15 @@ class CreateLedgerUseCaseTest extends TestCase
         $this->useCase->execute($lgRequest);
     }
 
+    private function buildLedgerRequest(): CreateLedgerRequest
+    {
+        $lgRequest = new CreateLedgerRequest();
+        $lgRequest->name = 'Test ledger';
+        $lgRequest->description = 'Test ledger description';
+        $lgRequest->code = 'TEST';
+        $lgRequest->ledgerType = 'asset';
+        $lgRequest->currency = 'USD';
+
+        return $lgRequest;
+    }
 }
