@@ -13,3 +13,5 @@ modules:
           depends: Symfony
           cleanup: true
       - Asserts
+      - \App\Tests\Support\Helper\EntityManagerReset:
+          depends: Symfony
