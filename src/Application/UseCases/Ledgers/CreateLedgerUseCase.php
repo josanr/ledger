@@ -26,7 +26,7 @@ class CreateLedgerUseCase
             $ledger->setDescription($request->description);
             $ledger->setCode($request->code);
             $ledger->setLedgerType($request->ledgerType);
-            $ledger->setCurrencyId($request->currencyId);
+            $ledger->setCurrencyId($request->currency);
             $ledger->setCreatedAt(new \DateTime());
             $ledger->setUpdatedAt(new \DateTime());
             $this->ledgerRepository->save($ledger);

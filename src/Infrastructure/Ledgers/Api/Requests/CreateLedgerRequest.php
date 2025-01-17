@@ -15,5 +15,6 @@ final class CreateLedgerRequest
     #[Assert\NotBlank]
     public string $ledgerType;
     #[Assert\NotBlank]
-    public int $currencyId;
+    #[Assert\Currency]
+    public string $currency;
 }

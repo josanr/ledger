@@ -82,6 +82,11 @@
     },
     "require-dev": {
         "codeception/codeception": "^5.1",
+        "codeception/module-asserts": "^3.0",
+        "codeception/module-doctrine": "^3.1",
+        "codeception/module-phpbrowser": "^3.0",
+        "codeception/module-rest": "^3.4",
+        "codeception/module-symfony": "^3.5",
         "symfony/maker-bundle": "^1.62",
         "symplify/easy-coding-standard": "^12.5"
     }

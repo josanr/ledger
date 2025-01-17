@@ -23,6 +23,8 @@ class CreateTransactionUseCase
 
     public function execute(CreateTransactionRequest $request): Transaction
     {
+        $this->logger->info(sprintf('Requested creation of Transaction with external id %s', $request->externalId));
+
         try {
             $ledger = $this->ledgerRepository->getById($request->ledgerId);
             $transaction = new Transaction();
@@ -38,13 +40,13 @@ class CreateTransactionUseCase
             $this->transactionsRepository->save($transaction);
             return $transaction;
         } catch (NotFoundException $e) {
-            $this->logger->info(sprintf('Not found ledger for transaction with id: %s', $request->ledgerId), [
+            $this->logger->error(sprintf('Not found ledger for transaction with id: %s', $request->ledgerId), [
                 'message' => $e->getMessage(),
                 'exception' => $e
             ]);
             throw new StoreException('Not found ledger for transaction', 2, $e);
         } catch (StoreException $e) {
-            $this->logger->info(sprintf('Unexpected exception: %s', $request->ledgerId), [
+            $this->logger->error(sprintf('Unexpected exception: %s', $request->ledgerId), [
                 'message' => $e->getMessage(),
                 'exception' => $e
             ]);
