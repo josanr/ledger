@@ -38,6 +38,8 @@ test_unit:
 
 test_api:
 	@$(eval c ?=)
+	@$(DOCKER_COMP) exec -e APP_ENV=test php bin/console doctrine:database:create || true
+	@$(DOCKER_COMP) exec -e APP_ENV=test php bin/console doctrine:migrations:migrate --no-interaction || true
 	@$(DOCKER_COMP) exec -e APP_ENV=test php vendor/bin/codecept run Api
 
 
